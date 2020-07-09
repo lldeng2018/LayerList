@@ -26,9 +26,9 @@ namespace LayerList
     /// </summary>
     internal class ComboBox_LayerList : ComboBox
     {
-
+        Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
         private bool _isInitialized;
-
+        //private static string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
         /// <summary>
         /// Combo Box constructor
         /// </summary>
@@ -52,12 +52,24 @@ namespace LayerList
             {
                 Clear();
 
-                //Add 6 items to the combobox
+                //Add items to the combobox
                 string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
-                string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
+
+                if (!File.Exists(FILE_NAME))
+                {
+                    MessageBox.Show(FILE_NAME+" cannot be found.");
+                    return; 
+                }
+                string[] lines = File.ReadAllLines(FILE_NAME);
                 foreach (string line in lines)
                 {
-                    Add(new ComboBoxItem(line));
+                    if (line.Length>=5 && line.Contains(","))
+                    {
+                        string[] content = line.Split(',');
+                        Add(new ComboBoxItem(content[0]));
+                        layerNameAndPath[content[0]] = content[1];
+                    }
+                    
                 }
                 //for (int i = 0; i < 6; i++)
                 //{
@@ -66,7 +78,6 @@ namespace LayerList
                 //}
                 _isInitialized = true;
             }
-
 
             Enabled = true; //enables the ComboBox
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
@@ -79,7 +90,6 @@ namespace LayerList
         /// <param name="item">The newly selected combo box item</param>
         protected override void OnSelectionChange(ComboBoxItem item)
         {
-
             if (item == null)
                 return;
 
@@ -88,8 +98,41 @@ namespace LayerList
 
             // TODO  Code behavior when selection changes.   
             Button1 btn = new Button1();
-            btn.AddLayer(item.Text);
-            
+            //btn.AddLayer(item.Text);
+
+            if (item.Text != "LayerName")
+            {
+                btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key
+            }
+
+
+            //string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+            //string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
+            //foreach (string line in lines)
+            //{
+            //    string[] content = line.Split(',');
+            //    //Add(new ComboBoxItem(content[0]));
+            //    if (item.Text != "LayerName" && item.Text == content[0])
+            //    {
+            //        btn.AddLayer(content[1]);
+            //    }
+            //}
+
+        }
+
+        private String[] LayerNamePath()
+        {
+            string[] content = new string[] { };
+            string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+            string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
+            foreach (string line in lines)
+            {
+                content = line.Split(',');
+                //Add(new ComboBoxItem(content[0]));
+                return content; 
+
+            }
+            return content; 
         }
 
     }

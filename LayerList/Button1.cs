@@ -40,22 +40,26 @@ namespace LayerList
 
                 string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
                 foreach (string line in lines)
-                {
-                    
+                {                   
                     if (line.EndsWith(".lyr") || line.EndsWith(".shp"))
                     {
-                    //    //Layer newLayer = LayerFactory.Instance.CreateLayer(new Uri(line), map);
-                        AddLayer(line);
+                        //Layer newLayer = LayerFactory.Instance.CreateLayer(new Uri(line), map);
+                        //string[] path = line.Split(',');
+                        if (line.Length >= 5 && line.Contains(","))
+                        {
+                            if (line.Split(',')[0]!= "LayerName")
+                            {
+                                AddLayer(line.Split(',')[1]);
+                            }                                                          
+                        }
+                           
                     }
-                    //else if (line.EndsWith(".shp"))
+                    
+                    //else
                     //{
-                    //    Layer lyr1 = LayerFactory.Instance.CreateLayer(new Uri(line), map);
+                    //    MessageBox.Show(line + " is not a valid file, cannot add to map. ");
+                    //    //return; 
                     //}
-                    else
-                    {
-                        MessageBox.Show(line + " is not a valid file, cannot add to map. ");
-                        return; 
-                    }
                 }
             }
             else
