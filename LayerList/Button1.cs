@@ -29,7 +29,7 @@ namespace LayerList
             GetLayers();
         }
 
-        private void GetLayers()
+        public void GetLayers()
         {
             //string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt"; 
             string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";

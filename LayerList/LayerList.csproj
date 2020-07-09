@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="AddLayersToMap.cs" />
     <Compile Include="Button1.cs" />
+    <Compile Include="ComboBox_LayerList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
