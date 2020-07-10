@@ -66,8 +66,8 @@ namespace LayerList
                     if (line.Length>=5 && line.Contains(","))
                     {
                         string[] content = line.Split(',');
-                        Add(new ComboBoxItem(content[0]));
-                        layerNameAndPath[content[0]] = content[1];
+                        Add(new ComboBoxItem(content[0].Trim()));
+                        layerNameAndPath[content[0].Trim()] = content[1].Trim();
                     }
                     
                 }
@@ -90,11 +90,13 @@ namespace LayerList
         /// <param name="item">The newly selected combo box item</param>
         protected override void OnSelectionChange(ComboBoxItem item)
         {
-            if (item == null)
+            if (item == null || string.IsNullOrEmpty(item.Text))
                 return;
+            //if (item == null)
+            //    return;
 
-            if (string.IsNullOrEmpty(item.Text))
-                return;
+            //if (string.IsNullOrEmpty(item.Text))
+            //    return;
 
             // TODO  Code behavior when selection changes.   
             Button1 btn = new Button1();
@@ -102,7 +104,11 @@ namespace LayerList
 
             if (item.Text != "LayerName")
             {
-                btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key
+                if (File.Exists(layerNameAndPath[item.Text]))
+                {
+                    btn.AddLayer(layerNameAndPath[item.Text]);//get the path with dictionary key
+                }
+                else MessageBox.Show(layerNameAndPath[item.Text] + " not found or inaccessible.");
             }
 
 
@@ -120,20 +126,20 @@ namespace LayerList
 
         }
 
-        private String[] LayerNamePath()
-        {
-            string[] content = new string[] { };
-            string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
-            string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
-            foreach (string line in lines)
-            {
-                content = line.Split(',');
-                //Add(new ComboBoxItem(content[0]));
-                return content; 
+        //private String[] LayerNamePath()
+        //{
+        //    string[] content = new string[] { };
+        //    string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
+        //    string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
+        //    foreach (string line in lines)
+        //    {
+        //        content = line.Split(',');
+        //        //Add(new ComboBoxItem(content[0]));
+        //        return content; 
 
-            }
-            return content; 
-        }
+        //    }
+        //    return content; 
+        //}
 
     }
 }

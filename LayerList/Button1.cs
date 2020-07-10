@@ -49,7 +49,13 @@ namespace LayerList
                         {
                             if (line.Split(',')[0]!= "LayerName")
                             {
-                                AddLayer(line.Split(',')[1]);
+                                String filePath = line.Split(',')[1].Trim();
+                                if (File.Exists(filePath))
+                                {
+                                    AddLayer(filePath);
+                                }
+                                else MessageBox.Show(filePath + " does not exist or is inaccessible.");
+                                
                             }                                                          
                         }
                            
@@ -75,7 +81,7 @@ namespace LayerList
             return QueuedTask.Run(() =>
             {
                 Map map = MapView.Active.Map;
-                return LayerFactory.Instance.CreateLayer(new Uri(uri), map);
+                return LayerFactory.Instance.CreateLayer(new Uri(uri.Trim()), map);
             });
         }
     }
