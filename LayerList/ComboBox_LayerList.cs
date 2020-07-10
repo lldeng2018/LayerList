@@ -53,7 +53,7 @@ namespace LayerList
                 Clear();
 
                 //Add items to the combobox
-                string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+                string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
 
                 if (!File.Exists(FILE_NAME))
                 {
@@ -123,7 +123,7 @@ namespace LayerList
         private String[] LayerNamePath()
         {
             string[] content = new string[] { };
-            string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+            string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
             string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
             foreach (string line in lines)
             {

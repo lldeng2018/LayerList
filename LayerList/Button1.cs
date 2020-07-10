@@ -24,7 +24,7 @@ namespace LayerList
     {
         protected override void OnClick()
         {
-            string uriShp = @"C:\Work\GIS\data\states.shp";
+            string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
             //AddLayer(uriShp);
             GetLayers();
         }
@@ -32,7 +32,7 @@ namespace LayerList
         public void GetLayers()
         {
             //string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt"; 
-            string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
+            string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
             MapView mv = MapView.Active;
             Map map = mv.Map;
             if (File.Exists(FILE_NAME))
@@ -65,7 +65,7 @@ namespace LayerList
             else
             {
 
-                string uriShp = @"C:\Work\GIS\data\states.shp";
+                string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
                 Layer lyr = LayerFactory.Instance.CreateLayer(new Uri(uriShp), map);
             }
         }
