@@ -20,7 +20,11 @@ namespace LayerList
 {
     internal class Button2 : Button
     {
-        protected override void OnClick() {
+        protected override void OnClick()
+        {
+            // ComboBox_LayerList cll = new ComboBox_LayerList();//wrong way to access current ComboBox
+
+            // Testing get existing ComboBox object, Opening File, and Updating ComboBox. JBK 2020.07.17
             AddLayersToMap addLayersToMap = AddLayersToMap.Current;
             addLayersToMap.ComboBox_LayerList.OpenFile();
             addLayersToMap.ComboBox_LayerList.UpdateCombo();

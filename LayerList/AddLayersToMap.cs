@@ -23,7 +23,7 @@ namespace LayerList
     internal class AddLayersToMap : Module
     {
         private static AddLayersToMap _this = null;
-        internal ComboBox_LayerList ComboBox_LayerList;
+        public ComboBox_LayerList ComboBox_LayerList { get; set; }= null;
 
 
         //string text = System.IO.File.ReadAllText(FILE_NAME);
@@ -37,7 +37,7 @@ namespace LayerList
         {
             get
             {
-                return _this ?? (_this = (AddLayersToMap)FrameworkApplication.FindModule("LayerList_AddLayersToMap"));
+                return _this ?? (_this = (AddLayersToMap)FrameworkApplication.FindModule("LayerList_Module"));
             }
         }
 
