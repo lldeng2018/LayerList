@@ -26,8 +26,6 @@ using ComboBox = ArcGIS.Desktop.Framework.Contracts.ComboBox;
 using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 
 
-
-
 namespace LayerList
 {
     /// <summary>
@@ -37,7 +35,6 @@ namespace LayerList
     {
         Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
         private bool _isInitialized;
-        //private static string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
         /// <summary>
         /// Combo Box constructor
         /// </summary>
@@ -66,37 +63,40 @@ namespace LayerList
                 //Add items to the combobox
                 string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
 
-                //OpenFileDialog file_choose = new OpenFileDialog();
-
-                //private void fileButton
-
 
                 if (File.Exists(FILE_NAME))
                 {
-                    MessageBox.Show(FILE_NAME+" cannot be found.");
-                    return; 
+                    readText(FILE_NAME);
                 }
-                string[] lines = File.ReadAllLines(FILE_NAME);
-                foreach (string line in lines)
-                {
-                    if (line.Length>=5 && line.Contains(","))
-                    {
-                        string[] content = line.Split(',');
-                        Add(new ComboBoxItem(content[0].Trim()));
-                        layerNameAndPath[content[0].Trim()] = content[1].Trim();
-                    }
-                    
+                else {
+                    MessageBox.Show(FILE_NAME + " cannot be found. Please search for your file using the OpenTextFile button");
+                    return;
                 }
-                //for (int i = 0; i < 6; i++)
-                //{
-                //    string name = string.Format("Item {0}", i);
-                //    Add(new ComboBoxItem(name));
-                //}
                 _isInitialized = true;
             }
 
             Enabled = true; //enables the ComboBox
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
+
+        }
+
+        public void OpenFile() {
+            string filename = string.Empty;
+            OpenItemDialog oid = new OpenItemDialog {
+                Title = "Open a text file",
+                Filter = ItemFilters.textFiles,
+                MultiSelect = true
+            };
+            bool? ok = oid.ShowDialog();
+
+            if (ok == true)
+            {
+                IEnumerable<Item> selected = oid.Items;
+
+                filename = selected.First().Path;
+                readText(filename);
+            }
+            else MessageBox.Show("No file opened");
 
         }
 
@@ -138,15 +138,9 @@ namespace LayerList
         {
             if (item == null || string.IsNullOrEmpty(item.Text))
                 return;
-            //if (item == null)
-            //    return;
-
-            //if (string.IsNullOrEmpty(item.Text))
-            //    return;
 
             // TODO  Code behavior when selection changes.   
             Button1 btn = new Button1();
-            //btn.AddLayer(item.Text);
 
             if (item.Text != "LayerName")
             {
@@ -154,39 +148,9 @@ namespace LayerList
                 {
                     btn.AddLayer(layerNameAndPath[item.Text]);//get the path with dictionary key
                 }
-                else MessageBox.Show(layerNameAndPath[item.Text] + " not found or inaccessible.");
+                else System.Windows.MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", layerNameAndPath[item.Text]));
             }
-
-
-            //string FILE_NAME = @"C:\Work\GIS\data\shpList.txt";
-            //string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
-            //foreach (string line in lines)
-            //{
-            //    string[] content = line.Split(',');
-            //    //Add(new ComboBoxItem(content[0]));
-            //    if (item.Text != "LayerName" && item.Text == content[0])
-            //    {
-            //        btn.AddLayer(content[1]);
-            //    }
-            //}
-
         }
-
-        //private String[] LayerNamePath()
-        //{
-        //    string[] content = new string[] { };
-        //    string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
-        //    string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
-        //    foreach (string line in lines)
-        //    {
-        //        content = line.Split(',');
-        //        //Add(new ComboBoxItem(content[0]));
-        //        return content; 
-
-        //    }
-        //    return content; 
-        //}
-
         private void ClearLists() {
             Clear(); //clear comboBox
             layerNameAndPath.Clear(); //clear dictionary
