@@ -158,5 +158,10 @@ namespace LayerList
         //    return content; 
         //}
 
+        private void ClearLists() {
+            Clear(); //clear comboBox
+            layerNameAndPath.Clear(); //clear dictionary
+        }
+
     }
 }
