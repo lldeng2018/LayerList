@@ -4,8 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 using ArcGIS.Core.CIM;
 using ArcGIS.Core.Data;
 using ArcGIS.Core.Geometry;
@@ -18,6 +21,12 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
+using Microsoft.Win32;
+using ComboBox = ArcGIS.Desktop.Framework.Contracts.ComboBox;
+using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
+
+
+
 
 namespace LayerList
 {
@@ -34,6 +43,9 @@ namespace LayerList
         /// </summary>
         public ComboBox_LayerList()
         {
+            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+            if (addLayersToMap == null) return;
+            addLayersToMap.ComboBox_LayerList = this;
             UpdateCombo();
         }
 
@@ -54,6 +66,11 @@ namespace LayerList
 
                 //Add items to the combobox
                 string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
+
+                //OpenFileDialog file_choose = new OpenFileDialog();
+
+                //private void fileButton
+
 
                 if (!File.Exists(FILE_NAME))
                 {

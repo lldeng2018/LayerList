@@ -23,11 +23,12 @@ namespace LayerList
     internal class AddLayersToMap : Module
     {
         private static AddLayersToMap _this = null;
-       
+        internal ComboBox_LayerList ComboBox_LayerList;
+
 
         //string text = System.IO.File.ReadAllText(FILE_NAME);
         // private static MapView mv = MapView.Active;
-       
+
 
         /// <summary>
         /// Retrieve the singleton instance to this module here
