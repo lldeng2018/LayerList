@@ -50,7 +50,7 @@ namespace LayerList
         /// Updates the combo box with all the items.
         /// </summary>
 
-        private void UpdateCombo()
+        public void UpdateCombo()
         {
             // TODO – customize this method to populate the combobox with your desired items  
             if (_isInitialized)
