@@ -62,8 +62,7 @@ namespace LayerList
 
             if (!_isInitialized)
             {
-                Clear();
-
+                ClearLists();
                 //Add items to the combobox
                 string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
 
@@ -72,7 +71,7 @@ namespace LayerList
                 //private void fileButton
 
 
-                if (!File.Exists(FILE_NAME))
+                if (File.Exists(FILE_NAME))
                 {
                     MessageBox.Show(FILE_NAME+" cannot be found.");
                     return; 
@@ -99,6 +98,36 @@ namespace LayerList
             Enabled = true; //enables the ComboBox
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
 
+        }
+
+        public void readText(string FILE_NAME)
+        {
+            ClearLists();
+            if (FILE_NAME != "")
+            {
+                string[] lines = File.ReadAllLines(FILE_NAME);
+                foreach (string line in lines)
+                {
+                    if (line.Contains(','))
+                    {
+                        string[] content = line.Split(',');
+                        string layerName = content[0].Trim();
+                        Add(new ComboBoxItem(layerName));
+                        layerNameAndPath[layerName] = content[1].Trim();
+                    }
+                    else
+                    {
+                        Add(new ComboBoxItem(line.Trim()));
+                        layerNameAndPath[line.Trim()] = line.Trim();
+                    }
+                }
+                MessageBox.Show(this.ItemCollection.Count() - 1 + " layers added to layer list from " + FILE_NAME);
+                _isInitialized = true;
+            }
+            else {
+                MessageBox.Show("No file found");
+                return;
+            }
         }
 
         /// <summary>
