@@ -60,8 +60,8 @@ namespace LayerList
             {
                 ClearLists();
                 //Add items to the combobox
-                string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
-
+                //string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
+                string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt";
 
                 if (File.Exists(FILE_NAME))
                 {
@@ -73,7 +73,7 @@ namespace LayerList
                 }
                 _isInitialized = true;
             }
-
+         
             Enabled = true; //enables the ComboBox
             SelectedItem = ItemCollection.FirstOrDefault(); //set the default item in the comboBox
 
@@ -116,11 +116,13 @@ namespace LayerList
                     }
                     else
                     {
-                        Add(new ComboBoxItem(line.Trim()));
-                        layerNameAndPath[line.Trim()] = line.Trim();
+                        string FName = Path.GetFileName(line.Trim());
+                        FName = Path.GetFileNameWithoutExtension(FName);
+                        Add(new ComboBoxItem(FName));
+                        layerNameAndPath[FName] = line.Trim();
                     }
                 }
-                MessageBox.Show(this.ItemCollection.Count() - 1 + " layers added to layer list from " + FILE_NAME);
+                MessageBox.Show(this.ItemCollection.Count() + " layers added to layer list from " + FILE_NAME);
                 _isInitialized = true;
             }
             else {
