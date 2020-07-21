@@ -22,32 +22,33 @@ namespace LayerList
 {
     internal class Button1 : Button
     {
+        public string FILE_NAME = string.Empty;
         protected override void OnClick()
         {
-            string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
+            //string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
             //AddLayer(uriShp);
+            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+            addLayersToMap.button = this;
             GetLayers();
         }
 
         public void GetLayers()
         {
             //string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt"; 
-            string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
-            MapView mv = MapView.Active;
-            Map map = mv.Map;
+            if (FILE_NAME == "")
+            {
+                FILE_NAME = @"C:\Work\GIS\data\shpList1.txt";
+            }
             if (File.Exists(FILE_NAME))
             {
-
                 string[] lines = File.ReadAllLines(FILE_NAME);//.Where(x =>!string.IsNullOrWhiteSpace(x));
                 foreach (string line in lines)
                 {                   
                     if (line.EndsWith(".lyr") || line.EndsWith(".shp"))
                     {
-                        //Layer newLayer = LayerFactory.Instance.CreateLayer(new Uri(line), map);
-                        //string[] path = line.Split(',');
-                        if (line.Length >= 5 && line.Contains(","))
+                        if (line.Contains(","))
                         {
-                            if (line.Split(',')[0]!= "LayerName")
+                            if (line.Split(',')[0] != "LayerName")
                             {
                                 String filePath = line.Split(',')[1].Trim();
                                 if (File.Exists(filePath))
@@ -55,24 +56,26 @@ namespace LayerList
                                     AddLayer(filePath);
                                 }
                                 else MessageBox.Show(filePath + " does not exist or is inaccessible.");
-                                
-                            }                                                          
-                        }
-                           
+
+                            }
+                            else
+                            {
+                                string fPath = line.Trim();
+                                if (File.Exists(fPath))
+                                {
+                                    AddLayer(fPath);
+                                }
+                                else MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", fPath));
+                            }
+                        }  
                     }
-                    
-                    //else
-                    //{
-                    //    MessageBox.Show(line + " is not a valid file, cannot add to map. ");
-                    //    //return; 
-                    //}
                 }
             }
             else
             {
-
-                string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
-                Layer lyr = LayerFactory.Instance.CreateLayer(new Uri(uriShp), map);
+                MessageBox.Show(FILE_NAME + " is not accessible");
+                this.Enabled = false;
+                return;
             }
         }
 

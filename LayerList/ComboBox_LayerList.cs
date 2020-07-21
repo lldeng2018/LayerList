@@ -93,6 +93,13 @@ namespace LayerList
                 IEnumerable<Item> selected = oid.Items;
 
                 filename = selected.First().Path;
+
+                AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+
+                Button1 button = addLayersToMap.button; //// get the instance of the current one, do not create a new Button1
+                //Button1 b1 = new Button1(); 
+                button.FILE_NAME = filename;
+                button.Enabled = true;
                 readText(filename);
             }
             else MessageBox.Show("No file opened");
@@ -141,7 +148,9 @@ namespace LayerList
                 return;
 
             // TODO  Code behavior when selection changes.   
-            Button1 btn = new Button1();
+            AddLayersToMap addLayersToMap = AddLayersToMap.Current;
+
+            Button1 btn = addLayersToMap.button;
 
             if (item.Text != "LayerName")
             {

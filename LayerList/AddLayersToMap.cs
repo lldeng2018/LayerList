@@ -26,6 +26,7 @@ namespace LayerList
         public ComboBox_LayerList ComboBox_LayerList { get; set; }= null;
 
 
+        public Button1 button { get; set; } = null;
         //string text = System.IO.File.ReadAllText(FILE_NAME);
         // private static MapView mv = MapView.Active;
 
