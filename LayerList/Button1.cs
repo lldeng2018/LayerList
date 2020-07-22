@@ -25,11 +25,31 @@ namespace LayerList
         public string FILE_NAME = string.Empty;
         protected override void OnClick()
         {
-            //string uriShp = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\Mainland.shp";
-            //AddLayer(uriShp);
+
             AddLayersToMap addLayersToMap = AddLayersToMap.Current;
             addLayersToMap.button = this;
-            GetLayers();
+            //GetLayers();
+            ComboBox_LayerList cb = addLayersToMap.ComboBox_LayerList;
+            // List<string> items = addLayersToMap.ComboBox_LayerList.ItemCollection;
+            Dictionary<string, string> dict = cb.layerNameAndPath;
+
+            if (cb.ItemCollection.Count > 0)
+            {
+                //IEnumerable<Item> items = cmbox.ItemCollection;
+                foreach (var item in cb.ItemCollection)
+                {
+                    //Debug.Print(item.GetType());
+                    if (item.ToString() != "LayerName")
+                    {
+                        if (File.Exists(dict[item.ToString()]))
+                        {
+                            AddLayer(dict[item.ToString()]);
+                        }
+                    }
+                }
+            }
+
+            else GetLayers();
         }
 
         public void GetLayers()

@@ -32,7 +32,7 @@ namespace LayerList
     /// </summary>
     internal class ComboBox_LayerList : ComboBox
     {
-        Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
+        public Dictionary<string, string> layerNameAndPath = new Dictionary<string, string>();
         private bool _isInitialized;
         /// <summary>
         /// Combo Box constructor
@@ -98,11 +98,21 @@ namespace LayerList
 
                 Button1 button = addLayersToMap.button; //// get the instance of the current one, do not create a new Button1
                 //Button1 b1 = new Button1(); 
-                button.FILE_NAME = filename;
-                button.Enabled = true;
+                if (button != null)
+                {
+                    button.FILE_NAME = filename;
+                    if (button.Enabled == false)
+                    {
+                        button.Enabled = true;
+                    }
+                }
                 readText(filename);
             }
-            else MessageBox.Show("No file opened");
+            else
+            {
+                MessageBox.Show("No file opened");
+                return;
+            }
 
         }
 
@@ -112,6 +122,11 @@ namespace LayerList
             if (FILE_NAME != "")
             {
                 string[] lines = File.ReadAllLines(FILE_NAME);
+                if (lines.ToList().Count() == 0)
+                {
+                    MessageBox.Show(FILE_NAME + " is empty.");
+                    return;
+                }
                 foreach (string line in lines)
                 {
                     if (line.Contains(','))
@@ -150,7 +165,7 @@ namespace LayerList
             // TODO  Code behavior when selection changes.   
             AddLayersToMap addLayersToMap = AddLayersToMap.Current;
 
-            Button1 btn = addLayersToMap.button;
+            Button1 btn = addLayersToMap.button ?? new Button1();
 
             if (item.Text != "LayerName")
             {
