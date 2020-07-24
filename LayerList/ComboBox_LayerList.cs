@@ -61,7 +61,8 @@ namespace LayerList
                 ClearLists();
                 //Add items to the combobox
                 //string FILE_NAME = @"C:\ArcGISWebApp\Ames_Sources\Shp_test\shpList.txt";
-                string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt";
+                //string FILE_NAME = @"W:\Ames\LayerFiles\coa_LAYERS_list_W.txt";
+                string FILE_NAME = @"G:\Ames\LayerFiles\coa_LAYERS_list.txt";
 
                 if (File.Exists(FILE_NAME))
                 {
@@ -167,7 +168,7 @@ namespace LayerList
 
             Button1 btn = addLayersToMap.button ?? new Button1();
 
-            if (item.Text != "LayerName")
+            if (item.Text.ToUpper() != "LAYERNAME")
             {
                 if (File.Exists(layerNameAndPath[item.Text]))
                 {
