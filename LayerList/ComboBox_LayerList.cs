@@ -19,6 +19,7 @@ using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
+using ArcGIS.Desktop.Internal.Layouts.DockPanes.Panels;
 using ArcGIS.Desktop.Mapping;
 using Microsoft.Win32;
 using ComboBox = ArcGIS.Desktop.Framework.Contracts.ComboBox;
@@ -130,22 +131,45 @@ namespace LayerList
                 }
                 foreach (string line in lines)
                 {
-                    if (line.Contains(','))
-                    {
-                        string[] content = line.Split(',');
-                        string layerName = content[0].Trim();
-                        Add(new ComboBoxItem(layerName));
-                        layerNameAndPath[layerName] = content[1].Trim();
+                    if (line != "") { 
+                        if (line.Contains(','))
+                        {
+                            string[] content = line.Split(',');
+                            string layerName = content[0].Trim();
+                            layerNameAndPath[layerName] = content[1].Trim();
+                        }
+                        else
+                        {
+                            string FName = Path.GetFileName(line.Trim());
+                            if (Path.HasExtension(line.Trim()))
+                            {
+                                FName = Path.GetFileNameWithoutExtension(FName);
+                                layerNameAndPath[FName] = line.Trim();
+                            }
+                            else
+                            {
+                                if (FName.ToUpper().Contains("SERVER"))
+                                {
+                                    string[] folders = line.Trim().Split('/'); //(Path.DirectorySeparatorChar);
+                                    string serviceName = folders[folders.Length - 2];
+                                    layerNameAndPath[serviceName + " - " + FName] = line.Trim();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(FName + " is not a map service, please verify.");
+                                    return;
+                                }
+                            }
+                        }
                     }
-                    else
-                    {
-                        string FName = Path.GetFileName(line.Trim());
-                        FName = Path.GetFileNameWithoutExtension(FName);
-                        Add(new ComboBoxItem(FName));
-                        layerNameAndPath[FName] = line.Trim();
-                    }
+                }//
+
+                var locationList = layerNameAndPath.Keys.ToList();
+                locationList.Sort();
+                foreach (var lName in locationList) {
+                    if (lName.ToUpper() == "LAYERNAME") Insert(0, new ComboBoxItem(lName));
+                    else Add(new ComboBoxItem(lName));
                 }
-                MessageBox.Show(this.ItemCollection.Count() + " layers added to layer list from " + FILE_NAME);
                 _isInitialized = true;
             }
             else {
@@ -170,9 +194,9 @@ namespace LayerList
 
             if (item.Text.ToUpper() != "LAYERNAME")
             {
-                if (File.Exists(layerNameAndPath[item.Text]))
+                if (File.Exists(layerNameAndPath[item.Text]) || layerNameAndPath[item.Text].ToUpper().Contains("SERVER"))  //make sure the path exists
                 {
-                    btn.AddLayer(layerNameAndPath[item.Text]);//get the path with dictionary key
+                    btn.AddLayer(layerNameAndPath[item.Text]); //get the path with dictionary key, then call AddLayer
                 }
                 else System.Windows.MessageBox.Show(string.Format("{0} doesn't exist or is not accessible", layerNameAndPath[item.Text]));
             }
